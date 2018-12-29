@@ -1,0 +1,51 @@
+basePath: '{{.BasePath}}'
+definitions:
+  defs.APIBody:
+    properties:
+      method:
+        type: string
+      req_body:
+        type: string
+      url:
+        type: string
+    type: object
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: '{{.Description}}'
+  license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+paths:
+  /: {}
+  /api:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: a api body
+        in: body
+        name: resbody
+        required: true
+        schema:
+          $ref: '#/definitions/defs.APIBody'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: userhome.html
+          schema:
+            type: html
+        "400":
+          description: '{"code":400,"msg":"","data":""}'
+          schema:
+            type: string
+      summary: API Handler
+  /upload/{vid-id}:
+    get:
+      summary: Proxy Handler
+    post:
+      summary: Proxy Handler
+  /userhome: {}
+swagger: "2.0"

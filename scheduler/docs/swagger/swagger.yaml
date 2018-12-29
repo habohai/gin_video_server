@@ -1,0 +1,36 @@
+basePath: '{{.BasePath}}'
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: '{{.Description}}'
+  license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+paths:
+  /api/v1/user/{username}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":nil}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"","data":nil}'
+          schema:
+            type: string
+      summary: add a new record for delete video
+swagger: "2.0"

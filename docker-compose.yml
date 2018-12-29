@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  apiserver:
+    image: apiserver
+    restart: always
+    networks:
+      mysql_app:
+        aliases:
+          - db
+    depends_on:
+      - scheduler
+    ports:
+      - 8000:8000
+    volumes:
+      - ./runtime:/go/src/github.com/haibeichina/gin_video_server/apiserver/runtime
+
+  scheduler:
+    image: scheduler
+    restart: always
+    networks:
+      mysql_app:
+        aliases:
+          - db
+    ports:
+      - 9001:9001
+    volumes:
+      - ./runtime:/go/src/github.com/haibeichina/gin_video_server/scheduler/runtime
+
+  streamserver:
+    image: streamserver
+    restart: always
+    networks:
+      mysql_app:
+        aliases:
+          - db
+    ports:
+      - 9000:9000
+    volumes:
+      - ./runtime:/go/src/github.com/haibeichina/gin_video_server/streamserver/runtime
+
+  web:
+    image: web
+    restart: always
+    networks:
+      mysql_app:
+        aliases:
+          - db
+    depends_on:
+      - apiserver
+      - streamserver
+    ports:
+      - 80:8085
+    volumes:
+      - ./runtime:/go/src/github.com/haibeichina/gin_video_server/web/runtime
+
+networks:
+  mysql_app:
+    external: true

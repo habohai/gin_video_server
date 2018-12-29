@@ -1,0 +1,67 @@
+basePath: '{{.BasePath}}'
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: '{{.Description}}'
+  license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+paths:
+  /api/v1/upload/{vid-id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      - description: video file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: stream
+          schema:
+            type: stream
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: upload video file server
+  /api/v1/videos/{vid-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: stream
+          schema:
+            type: stream
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: a video stream server
+swagger: "2.0"

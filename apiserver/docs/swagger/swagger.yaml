@@ -1,0 +1,261 @@
+basePath: '{{.BasePath}}'
+definitions:
+  defs.ReqNewComment:
+    properties:
+      content:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  defs.ReqNewVideo:
+    properties:
+      user_id:
+        type: integer
+      video_name:
+        type: string
+    type: object
+  defs.ReqUserCredential:
+    properties:
+      pwd:
+        type: string
+      user_name:
+        type: string
+    type: object
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: '{{.Description}}'
+  license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+paths:
+  /api/v1/user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user credential
+        in: body
+        name: ubody
+        required: true
+        schema:
+          $ref: '#/definitions/defs.ReqUserCredential'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":nil}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"bad request","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"internal error","data":nil}'
+          schema:
+            type: string
+      summary: add a new user
+  /api/v1/user/{username}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResUserInfo}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"数据库错误","data":nil}'
+          schema:
+            type: string
+      summary: get user info
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: user credential
+        in: body
+        name: ubody
+        required: true
+        schema:
+          $ref: '#/definitions/defs.ReqUserCredential'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResSignedIn}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"","data":nil}'
+          schema:
+            type: string
+      summary: user login
+  /api/v1/user/{username}/videos:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResVideoInfos}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"数据库错误","data":nil}'
+          schema:
+            type: string
+      summary: get user videoinfos
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: new video info
+        in: body
+        name: nvbody
+        required: true
+        schema:
+          $ref: '#/definitions/defs.ReqNewVideo'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResAddVideoInfo}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"","data":nil}'
+          schema:
+            type: string
+      summary: add a new video
+  /api/v1/user/{username}/videos/{vid-id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":{}}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":{}}'
+          schema:
+            type: string
+      summary: delete video by video_id
+  /api/v1/videos/{vid-id}/comments:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResComments}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"msg":"","data":nil}'
+          schema:
+            type: string
+      summary: get comments by video id
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: video id
+        in: path
+        name: vid-id
+        required: true
+        type: string
+      - description: user credential
+        in: body
+        name: cbody
+        required: true
+        schema:
+          $ref: '#/definitions/defs.ReqNewComment'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"ok","data":defs.ResAddComment}'
+          schema:
+            type: string
+        "400":
+          description: '{"code":400,"msg":"请求参数错误","data":nil}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":400,"msg":"添加评论失败","data":nil}'
+          schema:
+            type: string
+      summary: get add comment for video
+swagger: "2.0"
